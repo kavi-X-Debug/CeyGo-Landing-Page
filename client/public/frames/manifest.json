@@ -1,0 +1,31 @@
+{
+  "fps": 20,
+  "generatedAt": "2026-10-21T17:03:01.996Z",
+  "sizes": {
+    "lg": {
+      "width": 1280,
+      "height": 720
+    },
+    "sm": {
+      "width": 720,
+      "height": 406
+    }
+  },
+  "sequences": [
+    {
+      "name": "rotation-01",
+      "frames": 160,
+      "sourceDuration": 8
+    },
+    {
+      "name": "rotation-02",
+      "frames": 200,
+      "sourceDuration": 10
+    },
+    {
+      "name": "multiplication",
+      "frames": 200,
+      "sourceDuration": 10
+    }
+  ]
+}

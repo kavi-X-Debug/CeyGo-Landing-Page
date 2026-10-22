@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-night font-sans text-ink antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-mint ring-offset-2 ring-offset-night;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold transition-all duration-300;
+  }
+  .btn-mint {
+    @apply btn bg-mint text-night shadow-[0_10px_30px_-10px_rgba(94,234,212,0.7)] hover:-translate-y-0.5 hover:bg-[#7ff0de] hover:shadow-[0_16px_36px_-12px_rgba(94,234,212,0.8)];
+  }
+  .btn-teal {
+    @apply btn bg-teal text-white hover:-translate-y-0.5 hover:bg-[#0d6b64];
+  }
+  .btn-ghost {
+    @apply btn border border-white/20 bg-white/5 text-white hover:border-white/35 hover:bg-white/10;
+  }
+  .btn-outline {
+    @apply btn border border-line bg-white text-ink hover:border-teal/40 hover:text-teal;
+  }
+  .nav-link {
+    @apply relative rounded-full px-4 py-2 text-[15px] font-medium text-white/75 transition-colors hover:bg-white/5 hover:text-white;
+  }
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-1 left-4 right-4 h-[2px] origin-left scale-x-0 rounded-full bg-mint transition-transform duration-300;
+  }
+  .nav-link:hover::after {
+    @apply scale-x-100;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full text-[13px] font-semibold;
+  }
+  .section-title {
+    @apply text-[40px] font-extrabold leading-[1.02] tracking-[-0.04em] md:text-[56px];
+  }
+  .section-lead {
+    @apply text-[17px] leading-relaxed text-muted md:text-lg;
+  }
+  .story-title {
+    @apply text-[36px] font-extrabold leading-[1.02] tracking-[-0.045em] text-white md:text-[48px] lg:text-[56px];
+  }
+  .story-lead {
+    @apply mt-4 text-[16px] leading-relaxed text-white/65 md:text-lg;
+  }
+  .card {
+    @apply rounded-[28px] border border-line bg-white;
+  }
+  .wrap {
+    @apply mx-auto w-full max-w-site px-5 md:px-8;
+  }
+}
+
+/* Thin grid texture used on dark sections. */
+.grid-texture {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+/* Starting state for GSAP reveal animations (only when JS + motion are allowed). */
+.motion-ok [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+/* ---------- Hover effects (only on devices with a real pointer) ---------- */
+
+/* Elements moved by GSAP on hover must not also use CSS transform transitions. */
+[data-magnetic] {
+  transition-property: background-color, border-color, box-shadow, color !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  /* Shine sweep across the mint buttons */
+  .btn-mint {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .btn-mint::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 -80%;
+    width: 55%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: -1;
+    pointer-events: none;
+  }
+  .btn-mint:hover::before {
+    left: 130%;
+  }
+
+  /* Ghost buttons pick up a mint edge and glow */
+  .btn-ghost:hover {
+    border-color: rgba(94, 234, 212, 0.55);
+    box-shadow: 0 0 0 4px rgba(94, 234, 212, 0.08), 0 10px 30px -12px rgba(94, 234, 212, 0.45);
+  }
+
+  /* Arrow icons nudge forward */
+  .btn svg[class*='lucide-arrow'] {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .btn:hover svg[class*='lucide-arrow-right'] {
+    transform: translateX(4px);
+  }
+  .btn:hover svg[class*='lucide-arrow-up-right'] {
+    transform: translate(3px, -3px);
+  }
+
+  /* Cursor-following glow on cards */
+  [data-spotlight] {
+    position: relative;
+    isolation: isolate;
+  }
+  [data-spotlight]::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), var(--spot, rgba(94, 234, 212, 0.16)), transparent 65%);
+    z-index: 2;
+  }
+  [data-spotlight]:hover::after {
+    opacity: 1;
+  }
+  .spot-light {
+    --spot: rgba(15, 118, 110, 0.09);
+  }
+  .spot-light:hover {
+    border-color: rgba(15, 118, 110, 0.35);
+  }
+}
+
+/* Animated underline for text links */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1.5px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s;
+}
+.link-underline:hover {
+  background-size: 100% 1.5px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

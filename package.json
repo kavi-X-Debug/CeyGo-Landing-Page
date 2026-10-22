@@ -1,0 +1,15 @@
+{
+  "name": "ceygo",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "CeyGo cinematic landing page: React + Vite client and Express server",
+  "scripts": {
+    "install:all": "npm install --prefix client && npm install --prefix server",
+    "frames": "node scripts/prepare-frames.js",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "build": "npm run build --prefix client",
+    "start": "npm start --prefix server"
+  }
+}

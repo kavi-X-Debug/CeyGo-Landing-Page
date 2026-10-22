@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+*.log
+.DS_Store
+# Source videos are only needed to regenerate frames (npm run frames)
+client/public/videos/*.mp4
